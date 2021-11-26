@@ -1,4 +1,5 @@
 import datetime
+import pickle
 
 class LinkedList:
     class Node :
@@ -304,7 +305,18 @@ class Stock:
                     continue
             return stock
         return None
+    
 
+def saveStock(stock):
+    stock_pickle = open('stock.pkl', 'wb')
+    pickle.dump(stock, stock_pickle)
+    stock_pickle.close()
+
+def loadStock():
+    stock_pickle = open('stock.pkl', 'rb')
+    stock = pickle.load(stock_pickle)
+    stock_pickle.close()
+    return stock
        
 
 
@@ -315,15 +327,17 @@ s.getCategory('Meat').addNewType('pork',10,24)
 s.getCategory('Meat').getType('pork').addItem(10)
 s.getCategory('Meat').getType('pork').addItem(20)
 s.getCategory('Meat').addNewType('chicken',10,24)
-s.getCategory('Meat').getType('chicken').addItem(30)
+# s.getCategory('Meat').getType('chicken').addItem(30)
 #s.getCategory('Meat').getType('pork').addItem('pork1', 10)
 #print(s.printCategory())
 #print(s.getCategory('Meat').getType('pork').printItems())
 #s.getCategory('Meat').getType('pork').useItem(15)
 #print(s.getCategory('Meat').getType('pork').printItems())
-print(s.getDisplayItem())
-print(s.getCategory('Meat').getDisplayItem())
-
+# print(s.getDisplayItem())
+# print(s.getCategory('Meat').getDisplayItem())
+saveStock(s)
+ss = loadStock()
+print(ss.getDisplayItem())
 # item = []
 # q = []
     
