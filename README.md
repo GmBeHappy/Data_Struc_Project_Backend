@@ -12,6 +12,14 @@ Project : Shabu Stock Management
 - [@RMAI-PLEUM](https://github.com/RMAI-PLEUM)
 
 
+## Installation
+
+Download stock.py and add to project
+
+```python
+  from stock import *
+```
+    
 ## Usage
 
 #### Create Stock
