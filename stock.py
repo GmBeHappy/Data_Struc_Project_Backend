@@ -170,6 +170,9 @@ class Stock:
                         amount += self.items.items.nodeAt(i).data.amount
                 return amount
             
+            def clearItems(self):
+                self.items = Queue()
+            
             def useItem(self, amount):
                 if not self.items.isEmpty():
                     if self.getAmount() >= amount:
