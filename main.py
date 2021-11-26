@@ -96,6 +96,16 @@ class Queue:
     def isEmpty(self):
         return len(self.items) == 0
 
+    def removeIndex(self, index):
+        if index >= len(self.items):
+            return
+        if index == 0:
+            self.deQueue()
+        else:
+            p = self.items.nodeAt(index - 1)
+            p.next = p.next.next
+            self.items.size -= 1
+
 class Stock:
     class Category:
         class Type:
@@ -103,6 +113,7 @@ class Stock:
                 def __init__(self, name, amount, addDate=None):
                     self.name = name
                     self.amount = amount
+                    self.expDays = None
                     if addDate is None:
                         self.addDate = datetime.datetime.now()
                     else:
@@ -137,6 +148,47 @@ class Stock:
                         out += str(val) + ' '
                     return out
                 return 'Empty Category'
+            
+            def removeItem(self, name):
+                if not self.items.isEmpty():
+                    for i in range(len(self.items)):
+                        if self.items.items.nodeAt(i).data.name == name:
+                            self.items.deQueue()
+                            return
+                return None
+            
+            def removeAll(self):
+                self.items = Queue()
+            
+            def getAmount(self, name):
+                if not self.items.isEmpty():
+                    amount = 0
+                    for i in range(len(self.items)):
+                        if self.items.items.nodeAt(i).data.name == name:
+                            amount += self.items.items.nodeAt(i).data.amount
+                return amount
+            
+            def useItem(self, name, amount):
+                if not self.items.isEmpty():
+                    if self.getAmount(name) >= amount:
+                        while amount > 0:
+                            if not self.items.isEmpty():
+                                for i in range(len(self.items)):
+                                    if self.items.items.nodeAt(i).data.name == name:
+                                        if self.items.items.nodeAt(i).data.amount > amount:
+                                            self.items.items.nodeAt(i).data.amount -= amount
+                                            amount = 0
+                                        else:
+                                            amount -= self.items.items.nodeAt(i).data.amount
+                                            print(f"{self.items.items.nodeAt(i).data.name} {self.items.items.nodeAt(i).data.addDate} out")
+                                            self.items.removeIndex(i)
+                                            break 
+                            else:    
+                                print(f"Stock is Empty")
+                                break
+                    else:
+                        print(f"Not enough {name}")
+                return None
             
         def __init__(self, name, itemType = None):
             self.name = name
@@ -200,12 +252,16 @@ class Stock:
             return out
         return 'Empty Category'
 
+
 s = Stock('stock1')
 s.addCategory('Meat')
 s.getCategory('Meat').addType('pork')
 s.getCategory('Meat').getType('pork').addItem('pork1', 10)
+s.getCategory('Meat').getType('pork').addItem('pork1', 10)
 print(s.printCategory())
-print(s.getCategory('Meat').getType('pork').items.deQueue())
+print(s.getCategory('Meat').getType('pork').printItems())
+s.getCategory('Meat').getType('pork').useItem('pork1', 15)
+print(s.getCategory('Meat').getType('pork').printItems())
 
 
 item = []
