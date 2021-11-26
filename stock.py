@@ -163,17 +163,6 @@ class Stock:
                     return out
                 return 'Empty Category'
             
-            def removeItem(self, name):
-                if not self.items.isEmpty():
-                    for i in range(len(self.items)):
-                        if self.items.items.nodeAt(i).data.name == name:
-                            self.items.deQueue()
-                            return
-                return None
-            
-            def removeAll(self):
-                self.items = Queue()
-            
             def getAmount(self):
                 if not self.items.isEmpty():
                     amount = 0
@@ -224,8 +213,15 @@ class Stock:
                 else:
                     self.type.append(self.Type(name, expHour, items))
         
-        def addNewType(self, name, expHour):
+        def addNewType(self, name, amount, expHour):
             self.type.append(self.Type(name, expHour))
+            self.getType(name).addItem(amount)
+
+        def removeType(self, name):
+            for i in range(len(self.type)):
+                if self.type.nodeAt(i).data.name == name:
+                    self.type.removeIndex(i)
+                    break
 
         def printType(self):
             if not self.type.isEmpty():
@@ -242,6 +238,17 @@ class Stock:
                     if self.type.nodeAt(i).data.name== name:
                         return self.type.nodeAt(i).data
             return None
+        
+        #funtion to return all the items in the stock sort by remaining exp hour as a object
+        def getDisplayItem(self):
+            if not self.type.isEmpty():
+                items = []
+                for i in range(len(self.type)):
+                    item = []
+                    item.append(self.type.nodeAt(i).data.name)
+                    item.append(self.type.nodeAt(i).data.getAmount())
+                    items.append(item)
+            return items
 
     def __init__(self, name, category = None):
         self.name = name
@@ -274,21 +281,48 @@ class Stock:
             return out
         return 'Empty Category'
 
+    #funtion to return all the items in the stock sort by remaining exp hour as a object
+    def getDisplayItem(self):
+        if not self.category.isEmpty():
+            stock = []
+            for i in range(len(self.category)):
+                if not self.category.nodeAt(i).data.type.isEmpty():
+                    for j in range(len(self.category.nodeAt(i).data.type)):
+                        if not self.category.nodeAt(i).data.type.nodeAt(j).data.items.isEmpty():
+                            for k in range(len(self.category.nodeAt(i).data.type.nodeAt(j).data.items)):
+                                item = []
+                                item.append(self.category.nodeAt(i).data.type.nodeAt(j).data.items.items.nodeAt(k).data.name)
+                                item.append(self.category.nodeAt(i).data.type.nodeAt(j).data.items.items.nodeAt(k).data.amount)
+                                item.append(self.category.nodeAt(i).data.type.nodeAt(j).data.items.items.nodeAt(k).data.remainingExpHour)
+                                stock.append(item)
+                        else:
+                            continue
+                else:
+                    continue
+            return stock
+        return None
+
+       
+
 
 s = Stock('stock1')
 s.addCategory('Meat')
 #s.getCategory('Meat').addType('pork')
-s.getCategory('Meat').addNewType('pork', 24)
+s.getCategory('Meat').addNewType('pork',10,24)
 s.getCategory('Meat').getType('pork').addItem(10)
+s.getCategory('Meat').getType('pork').addItem(20)
+s.getCategory('Meat').addNewType('chicken',10,24)
+s.getCategory('Meat').getType('chicken').addItem(30)
 #s.getCategory('Meat').getType('pork').addItem('pork1', 10)
-print(s.printCategory())
-print(s.getCategory('Meat').getType('pork').printItems())
-s.getCategory('Meat').getType('pork').useItem(15)
-print(s.getCategory('Meat').getType('pork').printItems())
+#print(s.printCategory())
+#print(s.getCategory('Meat').getType('pork').printItems())
+#s.getCategory('Meat').getType('pork').useItem(15)
+#print(s.getCategory('Meat').getType('pork').printItems())
+print(s.getDisplayItem())
+print(s.getCategory('Meat').getDisplayItem())
 
-
-item = []
-q = []
+# item = []
+# q = []
     
 
 # while True:
