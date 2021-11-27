@@ -67,6 +67,16 @@ class LinkedList:
             p = p.next
         return p
 
+    def removeIndex(self,i) :
+        if i == 0 :
+            p = self.head
+            self.head = self.head.next
+        else :
+            p = self.nodeAt(i-1)
+            p.next = p.next.next
+        self.size -= 1
+        return p.data
+
 class Queue:
     def __init__(self, list = None):
         self.items = LinkedList()
@@ -320,14 +330,15 @@ def loadStock():
        
 
 
-s = Stock('stock1')
-s.addCategory('Meat')
+# s = Stock('stock1')
+# s.addCategory('Meat')
 #s.getCategory('Meat').addType('pork')
-s.getCategory('Meat').addNewType('pork',10,24)
-s.getCategory('Meat').getType('pork').addItem(10)
-s.getCategory('Meat').getType('pork').addItem(20)
-s.getCategory('Meat').addNewType('chicken',10,24)
-# s.getCategory('Meat').getType('chicken').addItem(30)
+# s.getCategory('Meat').addNewType('pork',10,24)
+# s.getCategory('Meat').getType('pork').addItem(10)
+# s.getCategory('Meat').getType('pork').addItem(20)
+# s.getCategory('Meat').addNewType('chicken',10,24)
+# s.getCategory('Meat').removeType('chicken')
+# # s.getCategory('Meat').getType('chicken').addItem(30)
 #s.getCategory('Meat').getType('pork').addItem('pork1', 10)
 #print(s.printCategory())
 #print(s.getCategory('Meat').getType('pork').printItems())
@@ -335,9 +346,9 @@ s.getCategory('Meat').addNewType('chicken',10,24)
 #print(s.getCategory('Meat').getType('pork').printItems())
 # print(s.getDisplayItem())
 # print(s.getCategory('Meat').getDisplayItem())
-saveStock(s)
-ss = loadStock()
-print(ss.getDisplayItem())
+# saveStock(s)
+# ss = loadStock()
+# print(ss.getDisplayItem())
 # item = []
 # q = []
     
